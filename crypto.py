@@ -7,6 +7,11 @@ def xorstring(s1, s2):
     return "".join([chr(ord(a) ^ ord(b)) for a, b in izip(s1, s2)])
 
 
+def xorstring_key(s, key):
+    key = (key*(len(s)/len(key) + 1))[:len(s)]
+    return xorstring(s, key)
+
+
 def hex_to_str(s):
     return s.decode('hex')
 
