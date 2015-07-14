@@ -86,6 +86,19 @@ def score_english(s):
 
     return score
 
+
+def break_byte_key_english(input):
+    bestscore = 0
+    for k in range(256):
+        s = xorstring_key(input, chr(k))
+        score = score_english(s)
+        if score > bestscore:
+            best = s
+            bestkey = k
+            bestscore = score
+
+    return bestkey, bestscore, best
+
 def get_hamming_distance(s1, s2):
     """
     Calculate the hamming distance between two strings. That is the number of
