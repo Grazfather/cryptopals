@@ -85,3 +85,16 @@ def score_english(s):
         score += freq * value
 
     return score
+
+def get_hamming_distance(s1, s2):
+    """
+    Calculate the hamming distance between two strings. That is the number of
+    different bits.
+    """
+    distance = 0
+    for c1, c2 in izip(s1, s2):
+        for i in range(8):
+            if (ord(c1) & 1 << i) != (ord(c2) & 1 << i):
+                distance += 1
+
+    return distance
