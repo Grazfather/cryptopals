@@ -1,10 +1,10 @@
 import base64
 from collections import Counter
-from itertools import izip
+import itertools
 
 
 def xorstring(s1, s2):
-    return "".join([chr(ord(a) ^ ord(b)) for a, b in izip(s1, s2)])
+    return "".join([chr(ord(a) ^ ord(b)) for a, b in itertools.izip(s1, s2)])
 
 
 def xorstring_key(s, key):
@@ -105,9 +105,30 @@ def get_hamming_distance(s1, s2):
     different bits.
     """
     distance = 0
-    for c1, c2 in izip(s1, s2):
+    for c1, c2 in itertools.izip(s1, s2):
         for i in range(8):
             if (ord(c1) & 1 << i) != (ord(c2) & 1 << i):
                 distance += 1
 
     return distance
+
+
+def get_normalized_hamming_distance(s, keysize, n=2):
+    """
+    Calculate the normalized hamming distance between the first n blocks of len
+    'keysize' in the supplied string.
+    """
+    slices = [s[keysize*i:keysize*(i+1)] for i in range(n)]
+    pairs = list(itertools.combinations(slices, 2))
+    dist = float(sum([get_hamming_distance(pair[0], pair[1]) for pair in pairs]))/float(len(pairs))
+    return float(dist) / float(keysize)
+
+
+def transpose_str(s, length):
+    """
+    Get a string and break it up into 'length' strings, where each string i is
+    composed of every i-1th character.
+    """
+    blocks = [s[i:i+length] for i in range(0, len(s), length)]
+    transposed = list(itertools.izip_longest(*blocks, fillvalue="\x00"))
+    return ["".join(_) for _ in transposed]
