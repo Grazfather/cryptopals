@@ -130,5 +130,5 @@ def transpose_str(s, length):
     composed of every i-1th character.
     """
     blocks = [s[i:i+length] for i in range(0, len(s), length)]
-    transposed = list(itertools.izip_longest(*blocks, fillvalue="\x00"))
+    transposed = itertools.izip_longest(*blocks, fillvalue="\x00")
     return ["".join(_) for _ in transposed]
