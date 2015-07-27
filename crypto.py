@@ -99,6 +99,7 @@ def break_byte_key_english(input):
 
     return bestkey, bestscore, best
 
+
 def get_hamming_distance(s1, s2):
     """
     Calculate the hamming distance between two strings. That is the number of
@@ -136,3 +137,14 @@ def transpose_str(s, length):
 
 def str_to_nlength_blocks(s, length):
     return [s[length*i:length*(i+1)] for i in range(len(s)/length + 1)]
+
+
+def get_padded(s, length):
+    """
+    Returns a new string padded to a multiple of the block length using PKCS#7.
+    """
+    pad = length - len(s) % length
+    if pad == length:
+        return s
+    else:
+        return s + chr(pad) * pad
