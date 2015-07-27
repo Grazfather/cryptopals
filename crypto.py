@@ -137,7 +137,14 @@ def transpose_str(s, length):
 
 
 def str_to_nlength_blocks(s, length):
-    return [s[length*i:length*(i+1)] for i in range(len(s)/length + 1)]
+    """
+    Return a list of slices of string 's' of length 'length', with any leftover
+    in the last element.
+    """
+    if len(s) % length:
+        return [s[length*i:length*(i+1)] for i in range(len(s)/length + 1)]
+    else:
+        return [s[length*i:length*(i+1)] for i in range(len(s)/length)]
 
 
 def get_padded(s, length):
