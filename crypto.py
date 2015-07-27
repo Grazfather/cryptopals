@@ -161,3 +161,45 @@ def get_padded(s, length):
 def aes_decrypt_ecb(ct, key):
     cipher = AES.new(key, AES.MODE_ECB)
     return cipher.decrypt(ct)
+
+
+def aes_encrypt_ecb(ct, key):
+    cipher = AES.new(key, AES.MODE_ECB)
+    return cipher.encrypt(get_padded(ct, AES.block_size))
+
+
+def aes_decrypt_block(ct, key):
+    ct = ct[:AES.block_size]
+    return aes_decrypt_ecb(ct, key)
+
+
+def aes_encrypt_block(ct, key):
+    ct = ct[:AES.block_size]
+    return aes_encrypt_ecb(ct, key)
+
+
+def aes_decrypt_cbc(ct, key, iv):
+    blocks = str_to_nlength_blocks(ct, AES.block_size)
+    feed = iv
+    pt = ""
+    for block in blocks:
+        ptb = aes_decrypt_block(block, key)
+        ptb = xorstring_key(ptb, feed)
+        feed = block
+        pt += ptb
+
+    return pt
+
+
+def aes_encrypt_cbc(pt, key, iv):
+    pt = get_padded(pt, AES.block_size)
+    blocks = str_to_nlength_blocks(pt, AES.block_size)
+    feed = iv
+    ct = ""
+    for block in blocks:
+        input = xorstring_key(block, feed)
+        ctb = aes_encrypt_block(input, key)
+        feed = ctb
+        ct += ctb
+
+    return ct
