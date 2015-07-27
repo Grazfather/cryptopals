@@ -1,6 +1,7 @@
 import base64
 from collections import Counter
 import itertools
+from Crypto.Cipher import AES
 
 
 def xorstring(s1, s2):
@@ -148,3 +149,8 @@ def get_padded(s, length):
         return s
     else:
         return s + chr(pad) * pad
+
+
+def aes_decrypt_ecb(ct, key):
+    cipher = AES.new(key, AES.MODE_ECB)
+    return cipher.decrypt(ct)

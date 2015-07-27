@@ -1,5 +1,3 @@
-from Crypto.Cipher import AES
-
 import crypto
 
 # Since we are keeping it in hex, it's double the actual block length
