@@ -132,3 +132,7 @@ def transpose_str(s, length):
     blocks = [s[i:i+length] for i in range(0, len(s), length)]
     transposed = itertools.izip_longest(*blocks, fillvalue="\x00")
     return ["".join(_) for _ in transposed]
+
+
+def str_to_nlength_blocks(s, length):
+    return [s[length*i:length*(i+1)] for i in range(len(s)/length + 1)]
