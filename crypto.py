@@ -163,9 +163,9 @@ def aes_decrypt_ecb(ct, key):
     return cipher.decrypt(ct)
 
 
-def aes_encrypt_ecb(ct, key):
+def aes_encrypt_ecb(pt, key):
     cipher = AES.new(key, AES.MODE_ECB)
-    return cipher.encrypt(get_padded(ct, AES.block_size))
+    return cipher.encrypt(get_padded(pt, AES.block_size))
 
 
 def aes_decrypt_block(ct, key):
@@ -173,9 +173,9 @@ def aes_decrypt_block(ct, key):
     return aes_decrypt_ecb(ct, key)
 
 
-def aes_encrypt_block(ct, key):
-    ct = ct[:AES.block_size]
-    return aes_encrypt_ecb(ct, key)
+def aes_encrypt_block(pt, key):
+    pt = pt[:AES.block_size]
+    return aes_encrypt_ecb(pt, key)
 
 
 def aes_decrypt_cbc(ct, key, iv):
