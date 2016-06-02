@@ -3,8 +3,10 @@ import random
 
 import crypto
 
+
 def get_random_aes_key():
     return os.urandom(16)
+
 
 def random_encrypt(data):
     key = get_random_aes_key()
