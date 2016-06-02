@@ -203,3 +203,23 @@ def aes_encrypt_cbc(pt, key, iv):
         ct += ctb
 
     return ct
+
+
+def aes_mode_oracle(enc_func):
+    """
+    Detect which mode a black box AES encryption routine is using.  This can be
+    done by providing a plaintext large enough that there will be at least two
+    blocks of plaintext that are the same. If the corresponding ciphertexts
+    contain identical blocks, then we know the mode if ECB, otherwise it's CBC.
+    """
+    pt = b"A"*64
+    ct = enc_func(pt)
+
+    # Split it into blocks
+    blocks = [ct[i:i+16] for i in range(0, len(ct), 16)]
+
+    # Check for duplicates
+    if len(blocks) != len(set(blocks)):
+        return "ECB"
+    else:
+        return "CBC"
