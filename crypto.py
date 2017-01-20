@@ -152,10 +152,12 @@ def get_padded(s, length):
     Returns a new string padded to a multiple of the block length using PKCS#7.
     """
     pad = length - len(s) % length
-    if pad == length:
-        return s
-    else:
-        return s + chr(pad) * pad
+    return s + chr(pad) * pad
+
+
+def strip_padding(s):
+    pad_count = ord(s[-1])
+    return s[:-pad_count]
 
 
 def aes_decrypt_ecb(ct, key):
@@ -175,7 +177,8 @@ def aes_decrypt_block(ct, key):
 
 def aes_encrypt_block(pt, key):
     pt = pt[:AES.block_size]
-    return aes_encrypt_ecb(pt, key)
+    cipher = AES.new(key, AES.MODE_ECB)
+    return cipher.encrypt(pt)
 
 
 def aes_decrypt_cbc(ct, key, iv):
@@ -188,6 +191,7 @@ def aes_decrypt_cbc(ct, key, iv):
         feed = block
         pt += ptb
 
+    pt = strip_padding(pt)
     return pt
 
 
