@@ -1,6 +1,9 @@
 import unittest
 
+import crypto
+
 BLOCK_SIZE = 16
+
 
 def check_pkcs7_padding(s):
     """Raise an exception if the provided string doesn't conform to PKCS7
@@ -32,6 +35,14 @@ class TestPkcs7Checker(unittest.TestCase):
 
     def test_padded(self):
         self.assertTrue(check_pkcs7_padding("short block!"+"\x04"*4))
+
+    def test_pad_func(self):
+        s = "x"*8
+        sp = crypto.get_padded(s, BLOCK_SIZE)
+        self.assertTrue(check_pkcs7_padding(sp))
+        s = "x"*16
+        sp = crypto.get_padded(s, BLOCK_SIZE)
+        self.assertTrue(check_pkcs7_padding(sp))
 
 if __name__ == "__main__":
     unittest.main()
